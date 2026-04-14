@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fmiModelDescription
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  fmiVersion="3.0.1"
+  modelName="Stimuli_FMI3"
+  instantiationToken="{19720f01-cb2c-417c-a180-10afc5fcc0b4}"
+  generationTool="Dymola Version 2025x Refresh 1, 2025-05-16 (Co-simulation using Cvode)"
+  generationDateAndTime="2025-07-23T18:53:17Z"
+  variableNamingConvention="structured">
+  <ModelExchange
+    modelIdentifier="Stimuli_FMI3"
+    providesDirectionalDerivatives="true"/>
+  <CoSimulation
+    modelIdentifier="Stimuli_FMI3"
+    canHandleVariableCommunicationStepSize="true"
+    maxOutputDerivativeOrder="1"
+    providesIntermediateUpdate="true"
+    mightReturnEarlyFromDoStep="true"
+    canGetAndSetFMUState="true"
+    canSerializeFMUState="true"
+    providesDirectionalDerivatives="true"
+    hasEventMode="true"/>
+  <UnitDefinitions>
+    <Unit
+      name="s">
+      <BaseUnit s="1"/>
+    </Unit>
+  </UnitDefinitions>
+  <TypeDefinitions>
+    <Float64Type
+      name="Modelica.Blocks.Interfaces.RealOutput"/>
+    <Float64Type
+      name="Modelica.Units.SI.Time"
+      quantity="Time"
+      unit="s"/>
+  </TypeDefinitions>
+  <DefaultExperiment startTime="0.0"
+    stopTime="1.0"
+    tolerance="0.0001"/>
+  <ModelVariables>
+    <Float64
+      name="time"
+      valueReference="268435455"
+      causality="independent"
+      unit="s">
+      <Annotations>
+        <Annotation
+          type="com.3ds.dymola">
+          <DeclarationOrder
+            order="3"/>
+        </Annotation>
+      </Annotations>
+    </Float64>
+    <Float64
+      name="stepTau.height"
+      valueReference="16777216"
+      description="Height of step"
+      causality="parameter"
+      variability="tunable"
+      start="3">
+      <Annotations>
+        <Annotation
+          type="com.3ds.dymola">
+          <DeclarationOrder
+            order="4"/>
+        </Annotation>
+      </Annotations>
+    </Float64>
+    <Float64
+      name="stepTau.offset"
+      valueReference="16777217"
+      description="Offset of output signal y"
+      causality="parameter"
+      variability="tunable"
+      start="0">
+      <Annotations>
+        <Annotation
+          type="com.3ds.dymola">
+          <DeclarationOrder
+            order="6"/>
+        </Annotation>
+      </Annotations>
+    </Float64>
+    <Float64
+      name="stepTau.startTime"
+      valueReference="16777218"
+      description="Output y = offset for time &lt; startTime"
+      causality="parameter"
+      variability="tunable"
+      declaredType="Modelica.Units.SI.Time"
+      start="0.5">
+      <Annotations>
+        <Annotation
+          type="com.3ds.dymola">
+          <DeclarationOrder
+            order="7"/>
+        </Annotation>
+      </Annotations>
+    </Float64>
+    <Float64
+      name="stepW.height"
+      valueReference="16777219"
+      description="Height of step"
+      causality="parameter"
+      variability="tunable"
+      start="10">
+      <Annotations>
+        <Annotation
+          type="com.3ds.dymola">
+          <DeclarationOrder
+            order="8"/>
+        </Annotation>
+      </Annotations>
+    </Float64>
+    <Float64
+      name="stepW.offset"
+      valueReference="16777220"
+      description="Offset of output signal y"
+      causality="parameter"
+      variability="tunable"
+      start="0">
+      <Annotations>
+        <Annotation
+          type="com.3ds.dymola">
+          <DeclarationOrder
+            order="10"/>
+        </Annotation>
+      </Annotations>
+    </Float64>
+    <Float64
+      name="stepW.startTime"
+      valueReference="16777221"
+      description="Output y = offset for time &lt; startTime"
+      causality="parameter"
+      variability="tunable"
+      declaredType="Modelica.Units.SI.Time"
+      start="0.1">
+      <Annotations>
+        <Annotation
+          type="com.3ds.dymola">
+          <DeclarationOrder
+            order="11"/>
+        </Annotation>
+      </Annotations>
+    </Float64>
+    <Float64
+      name="w_desired"
+      valueReference="603979776"
+      causality="output"
+      variability="discrete"
+      declaredType="Modelica.Blocks.Interfaces.RealOutput">
+      <Annotations>
+        <Annotation
+          type="com.3ds.dymola">
+          <DeclarationOrder
+            order="12 9"/>
+        </Annotation>
+      </Annotations>
+      <Alias
+        name="stepW.y"
+        description="Connector of Real output signal"/>
+    </Float64>
+    <Float64
+      name="LoadTorque_Nm"
+      valueReference="603979777"
+      causality="output"
+      variability="discrete"
+      declaredType="Modelica.Blocks.Interfaces.RealOutput">
+      <Annotations>
+        <Annotation
+          type="com.3ds.dymola">
+          <DeclarationOrder
+            order="13 5"/>
+        </Annotation>
+      </Annotations>
+      <Alias
+        name="stepTau.y"
+        description="Connector of Real output signal"/>
+    </Float64>
+  </ModelVariables>
+  <ModelStructure>
+    <Output valueReference="603979776"
+      dependencies="268435455"
+      dependenciesKind="dependent"/>
+    <Output valueReference="603979777"
+      dependencies="268435455"
+      dependenciesKind="dependent"/>
+    <InitialUnknown valueReference="603979776"
+      dependencies="268435455 16777219 16777220 16777221"
+      dependenciesKind="dependent dependent dependent dependent"/>
+    <InitialUnknown valueReference="603979777"
+      dependencies="268435455 16777216 16777217 16777218"
+      dependenciesKind="dependent dependent dependent dependent"/>
+  </ModelStructure>
+</fmiModelDescription>

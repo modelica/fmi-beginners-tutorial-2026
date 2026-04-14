@@ -1,0 +1,1491 @@
+#1
+char Aclass(3,24)
+Adymosim
+1.4
+Modelica experiment file
+
+
+#    Experiment parameters
+double experiment(7,1)
+       0                   # StartTime    Time at which integration starts
+                           #              (and linearization and trimming time)
+       1                   # StopTime     Time at which integration stops
+       0                   # Increment    Communication step size, if > 0
+     500                   # nInterval    Number of communication intervals, if > 0
+  1.0000000000000000E-04   # Tolerance    Relative precision of signals for
+                           #              simulation, linearization and trimming
+       0                   # MaxFixedStep Maximum step size of fixed step size
+                           #              integrators, if > 0.0
+       8                   # Algorithm    Integration algorithm as integer (1...28)
+                           #
+                           #             | model|       |        | dense | state |
+                           # Algorithm   | typ  | stiff | order  | output| event |
+                           # ------------+------+-------+--------+-------+-------+
+                           #  1 | deabm  |  ode |   no  |  1-12  |  yes  |   no  |
+                           #  2 | lsode1 |  ode |   no  |  1-12  |  yes  |   no  |
+                           #  3 | lsode2 |  ode |  yes  |  1-5   |  yes  |   no  |
+                           #  4 | lsodar |  ode |  both |1-12,1-5|  yes  |  yes  |
+                           #  5 | dopri5 |  ode |   no  |   5    |   no  |   no  |
+                           #  6 | dopri8 |  ode |   no  |   8    |   no  |   no  |
+                           #  7 | grk4t  |  ode |  yes  |   4    |   no  |   no  |
+                           #  8 | dassl  |  dae |  yes  |  1-5   |  yes  |  yes  |
+                           #  9 | odassl | hdae |  yes  |  1-5   |  yes  |  yes  |
+                           # 10 | mexx   | hdae |   no  |  2-24  |   no  |   no  |
+                           # 11 | euler  |  ode |   no  |   1    |   no  |  yes  |
+                           # 12 | rkfix2 |  ode |   no  |   2    |   no  |  yes  |
+                           # 13 | rkfix3 |  ode |   no  |   3    |   no  |  yes  |
+                           # 14 | rkfix4 |  ode |   no  |   4    |   no  |  yes  |
+                           #>=14| others |  ode |yes/no |  2-5   |   yes |  yes  |
+                           # ---+--------+------+-------+--------+-------+-------+
+                           # euler and rkfix have fixed stepsize.
+
+
+#    Method tuning parameters
+double method(27,1)
+       1                   # grid     type of communication time grid, defined by
+                           #          = 1: equidistant points ("Increment/nInterval")
+                           #          = 2: vector of grid points ("tgrid")
+                           #          = 3: variable step integrator (automatically)
+                           #          = 4: model (call of "increment" in Dymola, e.g.
+                           #                      incr=Time > 2 then 0 else 0.1
+                           #                      dummy=increment(incr))
+                           #          grid = 1,3 is stopped by "StopTime"
+                           #          grid = 2   is stopped by "tgrid(last)"
+                           #          grid = 4   runs forever (stopped by model)
+       1                   # nt       Use every NT time instant, if grid = 3
+       3                   # dense    1/2/3 restart/step/interpolate GRID points
+       1                   # evgrid   0/1 do not/save event points in comm. time grid
+       1                   # evu      0/1 U-discontinuity does not/trigger events
+       0                   # evuord       U-discontinuity order to consider (0,1,...)
+       0                   # error    0/1/2 One message/warning/error messages
+       0                   # jac      0/1 Compute jacobian numerically/by BLOCKJ
+       0                   # xd0c     0/1 Compute/set XD0
+       0                   # f3       0/1 Ignore/use F3 of HDAE (= index 1)
+       0                   # f4       0/1 Ignore/use F4 of HDAE (= index 2)
+       0                   # f5       0/1 Ignore/use F5 of HDAE (= invar.)
+       0                   # debug    flags for debug information (1<<0 uses pdebug) 
+     100                   # pdebug       priority of debug information (1...100)
+       0                   # fmax     Maximum number of evaluations of BLOCKF, if > 0
+       0                   # ordmax   Maximum allowed integration order, if > 0
+       0                   # hmax     Maximum absolute stepsize, if > 0
+       0                   # hmin     Minimum absolute stepsize, if > 0 (use with care!)
+       0                   # h0       Stepsize to be attempted on first step, if > 0
+  2.0000000000000000E-14   # teps     Bound to check, if 2 equal time instants
+  1.0000000000000000E-10   # eveps    Hysteresis epsilon at event points
+      20                   # eviter   Maximum number of event iterations
+  9.9999999999999995E-07   # delaym   Minimum time increment in delay buffers
+       1                   # fexcep   0/1 floating exception crashes/stops dymosim
+       1                   # tscale   clock-time = tscale*simulation-time, if grid = 5
+                           #          > 1: simulation too slow
+                           #          = 1: simulation-time = real-time
+                           #          < 1: simulation too fast
+       1                   # shared   (not used)
+    2473                   # memkey   (not used)
+
+
+#    Output parameters
+int settings(13,1)
+ 0                         # lprec    0/1 do not/store result data in double
+ 1                         # lx       0/1 do not/store x  (state variables)
+ 1                         # lxd      0/1 do not/store xd (derivative of states)
+ 1                         # lu       0/1 do not/store u  (input     signals)
+ 1                         # ly       0/1 do not/store y  (output    signals)
+ 0                         # lz       0/1 do not/store z  (indicator signals)
+ 1                         # lw       0/1 do not/store w  (auxiliary signals)
+ 1                         # la       0/1 do not/store a  (alias     signals)
+ 0                         # lperf    0/1 do not/store performance indicators
+ 0                         # levent   0/1 do not/store event point
+ 1                         # lres     0/1 do not/store results on result file
+ 0                         # lshare   0/1 do not/store info data for shared memory on dsshare.txt
+ 1                         # lform    0/1 ASCII/Matlab-binary storage format of results
+                           #              (for simulation/linearization; not for trimming)
+
+
+#    Names of initial variables
+char initialName(334,72)
+stimuli_fmu.stepTau.height
+stimuli_fmu.stepTau.offset
+stimuli_fmu.stepTau.startTime
+stimuli_fmu.stepW.height
+stimuli_fmu.stepW.offset
+stimuli_fmu.stepW.startTime
+stimuli_fmu.w_desired
+stimuli_fmu.LoadTorque_Nm
+stimuli_fmu.fmi_loggingOn
+stimuli_fmu.fmi_NumberOfEventIndicators
+stimuli_fmu.fmi.id
+stimuli_fmu.zeroOffset
+stimuli_fmu.fmi_NewStates
+stimuli_fmu.fmi_DiscreteInputChanged
+stimuli_fmu.fmi_iterationConverged
+stimuli_fmu.fmi_NextMode
+stimuli_fmu.fmi_flip
+stimuli_fmu.fmi_TNext
+stimuli_fmu.myTime
+stimuli_fmu.myTimeStart
+stimuli_fmu._first
+stimuli_fmu._startValuesNotSet
+stimuli_fmu.fmi_dummy
+controller_fmu._w_desired_start
+controller_fmu._w_desired_old
+controller_fmu.w_desired
+controller_fmu._w_start
+controller_fmu._w_old
+controller_fmu.w
+controller_fmu.v
+controller_fmu.fmi_loggingOn
+controller_fmu.fmi_InputTime
+controller_fmu.fmi_UsePreOnInputSignals
+controller_fmu.fmi_StartTime
+controller_fmu.fmi_StopTime
+controller_fmu.fmi_CommunicationStepSize
+controller_fmu.fmi_NumberOfSteps
+controller_fmu.stepSizeScaleFactor
+controller_fmu.fmi_forceShutDownAtStopTime
+controller_fmu.fmi_setTol
+controller_fmu.fmi_rTol
+controller_fmu.fmi.id
+controller_fmu.fmi_exitInit
+controller_fmu.fmi_flip
+controller_fmu.fmi_rdum
+controller_fmu.fmi_idum
+controller_fmu.fmi_StepOK
+controller_fmu.zeroOffset
+controller_fmu.myTimeStart
+controller_fmu.internal.v
+drive_fmu.signalVoltage.v
+drive_fmu.signalVoltage.i
+drive_fmu.signalVoltage.n.v
+drive_fmu.signalVoltage.n.i
+drive_fmu.ground.p.v
+drive_fmu.ground.p.i
+drive_fmu.loadInertia1.J
+drive_fmu.loadInertia1._phi_start
+drive_fmu.loadInertia1.phi
+drive_fmu.loadInertia1.der(phi)
+drive_fmu.loadInertia1._w_start
+drive_fmu.loadInertia1.w
+drive_fmu.loadInertia1.der(w)
+drive_fmu.loadInertia1.a
+drive_fmu.loadInertia1.flange_a.tau
+drive_fmu.loadInertia1.flange_b.tau
+drive_fmu.idealGear.phi_support
+drive_fmu.idealGear.ratio
+drive_fmu.idealGear.phi_a
+drive_fmu.idealGear.flange_a.tau
+drive_fmu.idealGear.flange_b.tau
+drive_fmu.speedSensor.flange.tau
+drive_fmu.torque.phi_support
+drive_fmu.torque.flange.tau
+drive_fmu.dcpm.TaOperational
+drive_fmu.dcpm.VaNominal
+drive_fmu.dcpm.IaNominal
+drive_fmu.dcpm.wNominal
+drive_fmu.dcpm.TaNominal
+drive_fmu.dcpm.Ra
+drive_fmu.dcpm.TaRef
+drive_fmu.dcpm.alpha20a
+drive_fmu.dcpm.La
+drive_fmu.dcpm.Jr
+drive_fmu.dcpm.useSupport
+drive_fmu.dcpm.Js
+drive_fmu.dcpm.useThermalPort
+drive_fmu.dcpm.phiMechanical
+drive_fmu.dcpm.tauElectrical
+drive_fmu.dcpm._ia_start
+drive_fmu.dcpm.pi
+drive_fmu.dcpm.quasiStatic
+drive_fmu.dcpm.ViNominal
+drive_fmu.dcpm.psi_eNominal
+drive_fmu.dcpm.turnsRatio
+drive_fmu.dcpm.TpmOperational
+drive_fmu.dcpm.Lme
+drive_fmu.dcpm.IeNominal
+drive_fmu.dcpm.frictionParameters.PRef
+drive_fmu.dcpm.frictionParameters.wRef
+drive_fmu.dcpm.frictionParameters.power_w
+drive_fmu.dcpm.frictionParameters.tauRef
+drive_fmu.dcpm.frictionParameters.linear
+drive_fmu.dcpm.frictionParameters.wLinear
+drive_fmu.dcpm.frictionParameters.tauLinear
+drive_fmu.dcpm.flange.tau
+drive_fmu.dcpm.inertiaRotor.J
+drive_fmu.dcpm.inertiaRotor._w_der
+drive_fmu.dcpm.inertiaStator.J
+drive_fmu.dcpm.inertiaStator.phi
+drive_fmu.dcpm.inertiaStator._phi_der
+drive_fmu.dcpm.inertiaStator.w
+drive_fmu.dcpm.inertiaStator._w_der
+drive_fmu.dcpm.inertiaStator.a
+drive_fmu.dcpm.inertiaStator.flange_a.tau
+drive_fmu.dcpm.inertiaStator.flange_b.tau
+drive_fmu.dcpm.fixed.phi0
+drive_fmu.dcpm.fixed.flange.tau
+drive_fmu.dcpm.friction.phi
+drive_fmu.dcpm.friction.tau
+drive_fmu.dcpm.friction.lossPower
+drive_fmu.dcpm.friction.flange.tau
+drive_fmu.dcpm.friction.support.tau
+drive_fmu.dcpm.friction.frictionParameters.PRef
+drive_fmu.dcpm.friction.frictionParameters.wRef
+drive_fmu.dcpm.friction.frictionParameters.power_w
+drive_fmu.dcpm.friction.frictionParameters.tauRef
+drive_fmu.dcpm.friction.frictionParameters.linear
+drive_fmu.dcpm.friction.frictionParameters.wLinear
+drive_fmu.dcpm.friction.frictionParameters.tauLinear
+drive_fmu.dcpm.friction.heatPort.T
+drive_fmu.dcpm.friction.heatPort.Q_flow
+drive_fmu.dcpm.internalSupport.tau
+drive_fmu.dcpm.coreParameters.m
+drive_fmu.dcpm.coreParameters.PRef
+drive_fmu.dcpm.coreParameters.VRef
+drive_fmu.dcpm.coreParameters.wRef
+drive_fmu.dcpm.coreParameters.ratioHysteresis
+drive_fmu.dcpm.coreParameters.GcRef
+drive_fmu.dcpm.coreParameters.wMin
+drive_fmu.dcpm.strayLoadParameters.PRef
+drive_fmu.dcpm.strayLoadParameters.IRef
+drive_fmu.dcpm.strayLoadParameters.wRef
+drive_fmu.dcpm.strayLoadParameters.power_w
+drive_fmu.dcpm.strayLoadParameters.tauRef
+drive_fmu.dcpm.brushParameters.V
+drive_fmu.dcpm.brushParameters.ILinear
+drive_fmu.dcpm.powerBalance.powerArmature
+drive_fmu.dcpm.powerBalance.powerMechanical
+drive_fmu.dcpm.powerBalance.powerInertiaStator
+drive_fmu.dcpm.powerBalance.powerInertiaRotor
+drive_fmu.dcpm.powerBalance.lossPowerTotal
+drive_fmu.dcpm.powerBalance.lossPowerArmature
+drive_fmu.dcpm.powerBalance.lossPowerCore
+drive_fmu.dcpm.powerBalance.lossPowerStrayLoad
+drive_fmu.dcpm.powerBalance.lossPowerFriction
+drive_fmu.dcpm.powerBalance.lossPowerBrush
+drive_fmu.dcpm.powerBalance.lossPowerPermanentMagnet
+drive_fmu.dcpm.pin_an.v
+drive_fmu.dcpm.ra.R
+drive_fmu.dcpm.ra.T_ref
+drive_fmu.dcpm.ra.alpha
+drive_fmu.dcpm.ra.v
+drive_fmu.dcpm.ra.T
+drive_fmu.dcpm.ra.T_heatPort
+drive_fmu.dcpm.ra.R_actual
+drive_fmu.dcpm.ra.n.v
+drive_fmu.dcpm.ra.heatPort.Q_flow
+drive_fmu.dcpm.la.v
+drive_fmu.dcpm.la.i
+drive_fmu.dcpm.la.der(i)
+drive_fmu.dcpm.la.L
+drive_fmu.dcpm.la.quasiStatic
+drive_fmu.dcpm.la.n.v
+drive_fmu.dcpm.la.n.i
+drive_fmu.dcpm.brush.v
+drive_fmu.dcpm.brush.n.v
+drive_fmu.dcpm.brush.brushParameters.V
+drive_fmu.dcpm.brush.brushParameters.ILinear
+drive_fmu.dcpm.brush.heatPort.T
+drive_fmu.dcpm.brush.heatPort.Q_flow
+drive_fmu.dcpm.core.v
+drive_fmu.dcpm.core.i
+drive_fmu.dcpm.core.lossPower
+drive_fmu.dcpm.core.Gc
+drive_fmu.dcpm.core.wLimit
+drive_fmu.dcpm.core.p.i
+drive_fmu.dcpm.core.n.i
+drive_fmu.dcpm.core.coreParameters.m
+drive_fmu.dcpm.core.coreParameters.PRef
+drive_fmu.dcpm.core.coreParameters.VRef
+drive_fmu.dcpm.core.coreParameters.wRef
+drive_fmu.dcpm.core.coreParameters.ratioHysteresis
+drive_fmu.dcpm.core.coreParameters.GcRef
+drive_fmu.dcpm.core.coreParameters.wMin
+drive_fmu.dcpm.core.heatPort.T
+drive_fmu.dcpm.core.heatPort.Q_flow
+drive_fmu.dcpm.strayLoad.v
+drive_fmu.dcpm.strayLoad.phi
+drive_fmu.dcpm.strayLoad.tau
+drive_fmu.dcpm.strayLoad.lossPower
+drive_fmu.dcpm.strayLoad.flange.tau
+drive_fmu.dcpm.strayLoad.support.tau
+drive_fmu.dcpm.strayLoad.strayLoadParameters.PRef
+drive_fmu.dcpm.strayLoad.strayLoadParameters.IRef
+drive_fmu.dcpm.strayLoad.strayLoadParameters.wRef
+drive_fmu.dcpm.strayLoad.strayLoadParameters.power_w
+drive_fmu.dcpm.strayLoad.strayLoadParameters.tauRef
+drive_fmu.dcpm.strayLoad.heatPort.T
+drive_fmu.dcpm.strayLoad.heatPort.Q_flow
+drive_fmu.dcpm.thermalAmbient.useTemperatureInputs
+drive_fmu.dcpm.thermalAmbient.TDefault
+drive_fmu.dcpm.thermalAmbient.Ta
+drive_fmu.dcpm.thermalAmbient.Q_flowCore
+drive_fmu.dcpm.thermalAmbient.Q_flowStrayLoad
+drive_fmu.dcpm.thermalAmbient.Q_flowFriction
+drive_fmu.dcpm.thermalAmbient.Tpm
+drive_fmu.dcpm.thermalAmbient.Q_flowPermanentMagnet
+drive_fmu.dcpm.thermalAmbient.Q_flowTotal
+drive_fmu.dcpm.thermalAmbient.thermalPort.heatPortCore.T
+drive_fmu.dcpm.thermalAmbient.thermalPort.heatPortCore.Q_flow
+drive_fmu.dcpm.thermalAmbient.thermalPort.heatPortStrayLoad.T
+drive_fmu.dcpm.thermalAmbient.thermalPort.heatPortStrayLoad.Q_flow
+drive_fmu.dcpm.thermalAmbient.thermalPort.heatPortFriction.T
+drive_fmu.dcpm.thermalAmbient.thermalPort.heatPortFriction.Q_flow
+drive_fmu.dcpm.thermalAmbient.thermalPort.heatPortBrush.T
+drive_fmu.dcpm.thermalAmbient.thermalPort.heatPortPermanentMagnet.T
+drive_fmu.dcpm.thermalAmbient.thermalPort.heatPortPermanentMagnet.Q_flow
+drive_fmu.dcpm.thermalAmbient.temperatureCore.T
+drive_fmu.dcpm.thermalAmbient.temperatureCore.port.T
+drive_fmu.dcpm.thermalAmbient.temperatureCore.port.Q_flow
+drive_fmu.dcpm.thermalAmbient.temperatureStrayLoad.T
+drive_fmu.dcpm.thermalAmbient.temperatureStrayLoad.port.T
+drive_fmu.dcpm.thermalAmbient.temperatureStrayLoad.port.Q_flow
+drive_fmu.dcpm.thermalAmbient.temperatureFriction.T
+drive_fmu.dcpm.thermalAmbient.temperatureFriction.port.T
+drive_fmu.dcpm.thermalAmbient.temperatureFriction.port.Q_flow
+drive_fmu.dcpm.thermalAmbient.temperatureBrush.T
+drive_fmu.dcpm.thermalAmbient.temperatureBrush.port.T
+drive_fmu.dcpm.thermalAmbient.temperaturePermanentMagnet.T
+drive_fmu.dcpm.thermalAmbient.temperaturePermanentMagnet.port.T
+drive_fmu.dcpm.thermalAmbient.temperaturePermanentMagnet.port.Q_flow
+drive_fmu.dcpm.thermalAmbient.constTpm.k
+drive_fmu.dcpm.thermalAmbient.constTpm.y
+drive_fmu.dcpm.internalThermalPort.heatPortArmature.Q_flow
+drive_fmu.dcpm.internalThermalPort.heatPortCore.T
+drive_fmu.dcpm.internalThermalPort.heatPortCore.Q_flow
+drive_fmu.dcpm.internalThermalPort.heatPortStrayLoad.T
+drive_fmu.dcpm.internalThermalPort.heatPortStrayLoad.Q_flow
+drive_fmu.dcpm.internalThermalPort.heatPortFriction.T
+drive_fmu.dcpm.internalThermalPort.heatPortFriction.Q_flow
+drive_fmu.dcpm.internalThermalPort.heatPortBrush.T
+drive_fmu.dcpm.internalThermalPort.heatPortBrush.Q_flow
+drive_fmu.dcpm.internalThermalPort.heatPortPermanentMagnet.T
+drive_fmu.dcpm.internalThermalPort.heatPortPermanentMagnet.Q_flow
+drive_fmu.dcpm.airGapDC.quasiStatic
+drive_fmu.dcpm.airGapDC.turnsRatio
+drive_fmu.dcpm.airGapDC.vei
+drive_fmu.dcpm.airGapDC.ie
+drive_fmu.dcpm.airGapDC.psi_e
+drive_fmu.dcpm.airGapDC._psi_e_der
+drive_fmu.dcpm.airGapDC.vai
+drive_fmu.dcpm.airGapDC.Le
+drive_fmu.dcpm.airGapDC.support._phi_der
+drive_fmu.dcpm.airGapDC.pin_ep.v
+drive_fmu.dcpm.airGapDC.pin_ep.i
+drive_fmu.dcpm.airGapDC.pin_en.v
+drive_fmu.dcpm.airGapDC.pin_en.i
+drive_fmu.dcpm.eGround.p.v
+drive_fmu.dcpm.eGround.p.i
+drive_fmu.dcpm.ie.I
+drive_fmu.dcpm.ie.v
+drive_fmu.dcpm.ie.i
+drive_fmu.dcpm.ie.p.v
+drive_fmu.dcpm.ie.p.i
+drive_fmu.dcpm.ie.n.v
+drive_fmu.dcpm.ie.n.i
+drive_fmu.dcpmData.Jr
+drive_fmu.dcpmData.Js
+drive_fmu.dcpmData.VaNominal
+drive_fmu.dcpmData.IaNominal
+drive_fmu.dcpmData.wNominal
+drive_fmu.dcpmData.TaNominal
+drive_fmu.dcpmData.Ra
+drive_fmu.dcpmData.TaRef
+drive_fmu.dcpmData.alpha20a
+drive_fmu.dcpmData.La
+drive_fmu.dcpmData.ViNominal
+drive_fmu.dcpmData.frictionParameters.PRef
+drive_fmu.dcpmData.frictionParameters.wRef
+drive_fmu.dcpmData.frictionParameters.power_w
+drive_fmu.dcpmData.frictionParameters.tauRef
+drive_fmu.dcpmData.frictionParameters.linear
+drive_fmu.dcpmData.frictionParameters.wLinear
+drive_fmu.dcpmData.frictionParameters.tauLinear
+drive_fmu.dcpmData.coreParameters.m
+drive_fmu.dcpmData.coreParameters.PRef
+drive_fmu.dcpmData.coreParameters.VRef
+drive_fmu.dcpmData.coreParameters.wRef
+drive_fmu.dcpmData.coreParameters.ratioHysteresis
+drive_fmu.dcpmData.coreParameters.GcRef
+drive_fmu.dcpmData.coreParameters.wMin
+drive_fmu.dcpmData.strayLoadParameters.PRef
+drive_fmu.dcpmData.strayLoadParameters.IRef
+drive_fmu.dcpmData.strayLoadParameters.wRef
+drive_fmu.dcpmData.strayLoadParameters.power_w
+drive_fmu.dcpmData.strayLoadParameters.tauRef
+drive_fmu.dcpmData.brushParameters.V
+drive_fmu.dcpmData.brushParameters.ILinear
+drive_fmu._V_start
+drive_fmu._LoadTorque_Nm_start
+drive_fmu.fmi_loggingOn
+drive_fmu.fmi_NumberOfEventIndicators
+drive_fmu.fmi_z[1]
+drive_fmu.fmi_z[2]
+drive_fmu.fmi_z[3]
+drive_fmu.fmi_z[4]
+drive_fmu.fmi_z_positive[1]
+drive_fmu.fmi_z_positive[2]
+drive_fmu.fmi_z_positive[3]
+drive_fmu.fmi_z_positive[4]
+drive_fmu.fmi.id
+drive_fmu.zeroOffset
+drive_fmu.fmi_NewStates
+drive_fmu.fmi_DiscreteInputChanged
+drive_fmu.fmi_iterationConverged
+drive_fmu.fmi_NextMode
+drive_fmu.fmi_flip
+drive_fmu.fmi_TNext
+drive_fmu.myTime
+drive_fmu.myTimeStart
+drive_fmu._first
+drive_fmu._startValuesNotSet
+drive_fmu.fmi_dummy
+
+double initialValue(334,6)
+ -1       3                       0                       0                
+  1   280   # stimuli_fmu.stepTau.height
+ -1       0                       0                       0                
+  1   280   # stimuli_fmu.stepTau.offset
+ -1  5.0000000000000000E-01       0                       0                
+  1   280   # stimuli_fmu.stepTau.startTime
+ -1      10                       0                       0                
+  1   280   # stimuli_fmu.stepW.height
+ -1       0                       0                       0                
+  1   280   # stimuli_fmu.stepW.offset
+ -1  1.0000000000000001E-01       0                       0                
+  1   280   # stimuli_fmu.stepW.startTime
+  0       0                       0                       0                
+  6   256   # stimuli_fmu.w_desired
+  0       0                       0                       0                
+  6   256   # stimuli_fmu.LoadTorque_Nm
+ -1       0                       0                       0                
+  1   281   # stimuli_fmu.fmi_loggingOn
+  0       0                       0                       0                
+  6  1282   # stimuli_fmu.fmi_NumberOfEventIndicators
+  0       0                       0                       0                
+  6  1346   # stimuli_fmu.fmi.id
+ -1       0                       0                       0                
+  1  1304   # stimuli_fmu.zeroOffset
+  0       0                       0                       0                
+  6  1353   # stimuli_fmu.fmi_NewStates
+  0       0                       0                       0                
+  6  1345   # stimuli_fmu.fmi_DiscreteInputChanged
+  0       0                       0                       0                
+  6  1353   # stimuli_fmu.fmi_iterationConverged
+  0       0                       0                       0                
+  6  1354   # stimuli_fmu.fmi_NextMode
+  0       0                       0                       0                
+  6  1353   # stimuli_fmu.fmi_flip
+  0  9.9999999999999995E+36       0                       0                
+  6  1352   # stimuli_fmu.fmi_TNext
+  0       0                       0                       0                
+  6  1312   # stimuli_fmu.myTime
+  0       0                       0                       0                
+  6  1280   # stimuli_fmu.myTimeStart
+  0       1                       0                       0                
+  6  1345   # stimuli_fmu._first
+  0       1                       0                       0                
+  6  1281   # stimuli_fmu._startValuesNotSet
+  0       0                       0                       0                
+  6  1376   # stimuli_fmu.fmi_dummy
+ -1       0                       0                       0                
+  1   280   # controller_fmu._w_desired_start
+  0       0                       0                       0                
+  6  1352   # controller_fmu._w_desired_old
+  0       0                       0                       0                
+  6   256   # controller_fmu.w_desired
+ -1       0                       0                       0                
+  1   280   # controller_fmu._w_start
+  0       0                       0                       0                
+  6  1352   # controller_fmu._w_old
+  0       0                       0                       0                
+  6   256   # controller_fmu.w
+  0       0                       0                       0                
+  6   256   # controller_fmu.v
+ -1       0                       0                       0                
+  1   281   # controller_fmu.fmi_loggingOn
+  0       0                       0                       0                
+  6   257   # controller_fmu.fmi_InputTime
+  0       1                       0                       0                
+  6   257   # controller_fmu.fmi_UsePreOnInputSignals
+ -1       0                       0                       0                
+  1   280   # controller_fmu.fmi_StartTime
+ -1      10                       0                       0                
+  1   280   # controller_fmu.fmi_StopTime
+ -1  1.0000000000000000E-03       0                       0                
+  1   280   # controller_fmu.fmi_CommunicationStepSize
+  0       0                       0                       0                
+  6   256   # controller_fmu.fmi_NumberOfSteps
+ -1       1                       0                       0                
+  1   282   # controller_fmu.stepSizeScaleFactor
+ -1       0                       0                       0                
+  1   281   # controller_fmu.fmi_forceShutDownAtStopTime
+ -1       0                       0                       0                
+  1   281   # controller_fmu.fmi_setTol
+ -1  9.9999999999999995E-07       0                       0                
+  1   280   # controller_fmu.fmi_rTol
+  0       0                       0                       0                
+  6  1282   # controller_fmu.fmi.id
+  0       0                       0                       0                
+  6  1345   # controller_fmu.fmi_exitInit
+  0       0                       0                       0                
+  6  1353   # controller_fmu.fmi_flip
+  0       0                       0                       0                
+  6  1280   # controller_fmu.fmi_rdum
+  0       0                       0                       0                
+  6  1282   # controller_fmu.fmi_idum
+  0       0                       0                       0                
+  6  1345   # controller_fmu.fmi_StepOK
+ -1       0                       0                       0                
+  1  1304   # controller_fmu.zeroOffset
+  0       0                       0                       0                
+  6  1280   # controller_fmu.myTimeStart
+  0       0                       0                       0                
+  6  1344   # controller_fmu.internal.v
+  0       0                       0                       0                
+  6   256   # drive_fmu.signalVoltage.v
+  0       0                       0                       0                
+  6   256   # drive_fmu.signalVoltage.i
+  0       0                       0                       0                
+  6   256   # drive_fmu.signalVoltage.n.v
+  0       0                       0                       0                
+  6   256   # drive_fmu.signalVoltage.n.i
+  0       0                       0                       0                
+  6   256   # drive_fmu.ground.p.v
+  0       0                       0                       0                
+  6   256   # drive_fmu.ground.p.i
+ -1       1                       0                 1.7976931348623157E+308
+  1   280   # drive_fmu.loadInertia1.J
+ -1       0                       0                       0                
+  1   280   # drive_fmu.loadInertia1._phi_start
+ -1       0                       0                       0                
+  2   272   # drive_fmu.loadInertia1.phi
+  0       0                       0                       0                
+  3   256   # drive_fmu.loadInertia1.der(phi)
+ -1       0                       0                       0                
+  1   280   # drive_fmu.loadInertia1._w_start
+ -1       0                       0                       0                
+  2   272   # drive_fmu.loadInertia1.w
+  0       0                       0                       0                
+  3   256   # drive_fmu.loadInertia1.der(w)
+  0       0                       0                       0                
+  6   256   # drive_fmu.loadInertia1.a
+  0       0                       0                       0                
+  6   256   # drive_fmu.loadInertia1.flange_a.tau
+  0       0                       0                       0                
+  6   256   # drive_fmu.loadInertia1.flange_b.tau
+  0       0                       0                       0                
+  6   256   # drive_fmu.idealGear.phi_support
+ -1      10                       0                       0                
+  1   280   # drive_fmu.idealGear.ratio
+  0       0                       0                       0                
+  6   256   # drive_fmu.idealGear.phi_a
+  0       0                       0                       0                
+  6   256   # drive_fmu.idealGear.flange_a.tau
+  0       0                       0                       0                
+  6   256   # drive_fmu.idealGear.flange_b.tau
+  0       0                       0                       0                
+  6   256   # drive_fmu.speedSensor.flange.tau
+  0       0                       0                       0                
+  6   256   # drive_fmu.torque.phi_support
+  0       0                       0                       0                
+  6   256   # drive_fmu.torque.flange.tau
+ -1  2.9314999999999998E+02       0                 1.7976931348623157E+308
+  1   280   # drive_fmu.dcpm.TaOperational
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpm.VaNominal
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpm.IaNominal
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpm.wNominal
+  0  2.8814999999999998E+02       0                 1.7976931348623157E+308
+  6   328   # drive_fmu.dcpm.TaNominal
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpm.Ra
+  0  2.8814999999999998E+02       0                 1.7976931348623157E+308
+  6   328   # drive_fmu.dcpm.TaRef
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpm.alpha20a
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpm.La
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpm.Jr
+  0       0                       0                       0                
+  6   257   # drive_fmu.dcpm.useSupport
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpm.Js
+  0       0                       0                       0                
+  6   257   # drive_fmu.dcpm.useThermalPort
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.phiMechanical
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.tauElectrical
+ -1       0                       0                       0                
+  1   280   # drive_fmu.dcpm._ia_start
+  0  3.1415926535897931E+00       0                       0                
+  6   256   # drive_fmu.dcpm.pi
+  0       0                       0                       0                
+  6   257   # drive_fmu.dcpm.quasiStatic
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpm.ViNominal
+  0       1                       0                       0                
+  6   256   # drive_fmu.dcpm.psi_eNominal
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpm.turnsRatio
+  0  2.9314999999999998E+02       0                 1.7976931348623157E+308
+  6   256   # drive_fmu.dcpm.TpmOperational
+  0       1                       0                       0                
+  6   256   # drive_fmu.dcpm.Lme
+  0       1                       0                       0                
+  6   256   # drive_fmu.dcpm.IeNominal
+  0       0                       0                 1.7976931348623157E+308
+  6   256   # drive_fmu.dcpm.frictionParameters.PRef
+  0  9.9999999999999997E-61  9.9999999999999997E-61 1.7976931348623157E+308
+  6   328   # drive_fmu.dcpm.frictionParameters.wRef
+  0  9.9999999999999997E-61  9.9999999999999997E-61 1.7976931348623157E+308
+  6   328   # drive_fmu.dcpm.frictionParameters.power_w
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpm.frictionParameters.tauRef
+  0  1.0000000000000000E-03       0                       0                
+  6   256   # drive_fmu.dcpm.frictionParameters.linear
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpm.frictionParameters.wLinear
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpm.frictionParameters.tauLinear
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.flange.tau
+  0       0                       0                 1.7976931348623157E+308
+  6   328   # drive_fmu.dcpm.inertiaRotor.J
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.inertiaRotor._w_der
+  0       0                       0                 1.7976931348623157E+308
+  6   328   # drive_fmu.dcpm.inertiaStator.J
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpm.inertiaStator.phi
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.inertiaStator._phi_der
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.inertiaStator.w
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.inertiaStator._w_der
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.inertiaStator.a
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.inertiaStator.flange_a.tau
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.inertiaStator.flange_b.tau
+ -1       0                       0                       0                
+  1   280   # drive_fmu.dcpm.fixed.phi0
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.fixed.flange.tau
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.friction.phi
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.friction.tau
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.friction.lossPower
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.friction.flange.tau
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.friction.support.tau
+  0       0                       0                 1.7976931348623157E+308
+  6   256   # drive_fmu.dcpm.friction.frictionParameters.PRef
+  0  9.9999999999999997E-61  9.9999999999999997E-61 1.7976931348623157E+308
+  6   328   # drive_fmu.dcpm.friction.frictionParameters.wRef
+  0  9.9999999999999997E-61  9.9999999999999997E-61 1.7976931348623157E+308
+  6   328   # drive_fmu.dcpm.friction.frictionParameters.power_w
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpm.friction.frictionParameters.tauRef
+  0  1.0000000000000000E-03       0                       0                
+  6   256   # drive_fmu.dcpm.friction.frictionParameters.linear
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpm.friction.frictionParameters.wLinear
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpm.friction.frictionParameters.tauLinear
+  0  2.9314999999999998E+02       0                 1.7976931348623157E+308
+  6   256   # drive_fmu.dcpm.friction.heatPort.T
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.friction.heatPort.Q_flow
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.internalSupport.tau
+  0       1                       0                       0                
+  6   258   # drive_fmu.dcpm.coreParameters.m
+  0       0                       0                 1.7976931348623157E+308
+  6   256   # drive_fmu.dcpm.coreParameters.PRef
+  0  9.9999999999999997E-61  9.9999999999999997E-61 1.7976931348623157E+308
+  6   328   # drive_fmu.dcpm.coreParameters.VRef
+  0  9.9999999999999997E-61  9.9999999999999997E-61 1.7976931348623157E+308
+  6   328   # drive_fmu.dcpm.coreParameters.wRef
+  0       0                       0                       1                
+  6   256   # drive_fmu.dcpm.coreParameters.ratioHysteresis
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpm.coreParameters.GcRef
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpm.coreParameters.wMin
+  0       0                       0                 1.7976931348623157E+308
+  6   256   # drive_fmu.dcpm.strayLoadParameters.PRef
+  0  9.9999999999999997E-61  9.9999999999999997E-61 1.7976931348623157E+308
+  6   328   # drive_fmu.dcpm.strayLoadParameters.IRef
+  0  9.9999999999999997E-61  9.9999999999999997E-61 1.7976931348623157E+308
+  6   328   # drive_fmu.dcpm.strayLoadParameters.wRef
+  0  9.9999999999999997E-61  9.9999999999999997E-61 1.7976931348623157E+308
+  6   328   # drive_fmu.dcpm.strayLoadParameters.power_w
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpm.strayLoadParameters.tauRef
+  0  6.9999999999999996E-01       0                       0                
+  6   256   # drive_fmu.dcpm.brushParameters.V
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpm.brushParameters.ILinear
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.powerBalance.powerArmature
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.powerBalance.powerMechanical
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.powerBalance.powerInertiaStator
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.powerBalance.powerInertiaRotor
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.powerBalance.lossPowerTotal
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.powerBalance.lossPowerArmature
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.powerBalance.lossPowerCore
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.powerBalance.lossPowerStrayLoad
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.powerBalance.lossPowerFriction
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.powerBalance.lossPowerBrush
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.powerBalance.lossPowerPermanentMagnet
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.pin_an.v
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpm.ra.R
+  0  2.8814999999999998E+02       0                 1.7976931348623157E+308
+  6   328   # drive_fmu.dcpm.ra.T_ref
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpm.ra.alpha
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.ra.v
+  0  2.8814999999999998E+02       0                 1.7976931348623157E+308
+  6   328   # drive_fmu.dcpm.ra.T
+  0  2.8814999999999998E+02       0                 1.7976931348623157E+308
+  6   328   # drive_fmu.dcpm.ra.T_heatPort
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpm.ra.R_actual
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.ra.n.v
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.ra.heatPort.Q_flow
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.la.v
+ -1       0                       0                       0                
+  2   272   # drive_fmu.dcpm.la.i
+  0       0                       0                       0                
+  3   256   # drive_fmu.dcpm.la.der(i)
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpm.la.L
+  0       0                       0                       0                
+  6   257   # drive_fmu.dcpm.la.quasiStatic
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.la.n.v
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.la.n.i
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.brush.v
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.brush.n.v
+  0  6.9999999999999996E-01       0                       0                
+  6   256   # drive_fmu.dcpm.brush.brushParameters.V
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpm.brush.brushParameters.ILinear
+  0  2.9314999999999998E+02       0                 1.7976931348623157E+308
+  6   256   # drive_fmu.dcpm.brush.heatPort.T
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.brush.heatPort.Q_flow
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.core.v
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.core.i
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.core.lossPower
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.core.Gc
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.core.wLimit
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.core.p.i
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.core.n.i
+  0       1                       0                       0                
+  6   258   # drive_fmu.dcpm.core.coreParameters.m
+  0       0                       0                 1.7976931348623157E+308
+  6   256   # drive_fmu.dcpm.core.coreParameters.PRef
+  0  9.9999999999999997E-61  9.9999999999999997E-61 1.7976931348623157E+308
+  6   328   # drive_fmu.dcpm.core.coreParameters.VRef
+  0  9.9999999999999997E-61  9.9999999999999997E-61 1.7976931348623157E+308
+  6   328   # drive_fmu.dcpm.core.coreParameters.wRef
+  0       0                       0                       1                
+  6   256   # drive_fmu.dcpm.core.coreParameters.ratioHysteresis
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpm.core.coreParameters.GcRef
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpm.core.coreParameters.wMin
+  0  2.9314999999999998E+02       0                 1.7976931348623157E+308
+  6   256   # drive_fmu.dcpm.core.heatPort.T
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.core.heatPort.Q_flow
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.strayLoad.v
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.strayLoad.phi
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.strayLoad.tau
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.strayLoad.lossPower
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.strayLoad.flange.tau
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.strayLoad.support.tau
+  0       0                       0                 1.7976931348623157E+308
+  6   256   # drive_fmu.dcpm.strayLoad.strayLoadParameters.PRef
+  0  9.9999999999999997E-61  9.9999999999999997E-61 1.7976931348623157E+308
+  6   328   # drive_fmu.dcpm.strayLoad.strayLoadParameters.IRef
+  0  9.9999999999999997E-61  9.9999999999999997E-61 1.7976931348623157E+308
+  6   328   # drive_fmu.dcpm.strayLoad.strayLoadParameters.wRef
+  0  9.9999999999999997E-61  9.9999999999999997E-61 1.7976931348623157E+308
+  6   328   # drive_fmu.dcpm.strayLoad.strayLoadParameters.power_w
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpm.strayLoad.strayLoadParameters.tauRef
+  0  2.9314999999999998E+02       0                 1.7976931348623157E+308
+  6   256   # drive_fmu.dcpm.strayLoad.heatPort.T
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.strayLoad.heatPort.Q_flow
+  0       0                       0                       0                
+  6   257   # drive_fmu.dcpm.thermalAmbient.useTemperatureInputs
+  0  2.9314999999999998E+02       0                 1.7976931348623157E+308
+  6   256   # drive_fmu.dcpm.thermalAmbient.TDefault
+  0  2.8814999999999998E+02       0                 1.7976931348623157E+308
+  6   328   # drive_fmu.dcpm.thermalAmbient.Ta
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.thermalAmbient.Q_flowCore
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.thermalAmbient.Q_flowStrayLoad
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.thermalAmbient.Q_flowFriction
+  0  2.9314999999999998E+02       0                 1.7976931348623157E+308
+  6   256   # drive_fmu.dcpm.thermalAmbient.Tpm
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.thermalAmbient.Q_flowPermanentMagnet
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.thermalAmbient.Q_flowTotal
+  0  2.9314999999999998E+02       0                 1.7976931348623157E+308
+  6   256   # drive_fmu.dcpm.thermalAmbient.thermalPort.heatPortCore.T
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.thermalAmbient.thermalPort.heatPortCore.Q_flow
+  0  2.9314999999999998E+02       0                 1.7976931348623157E+308
+  6   256   # drive_fmu.dcpm.thermalAmbient.thermalPort.heatPortStrayLoad.T
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.thermalAmbient.thermalPort.heatPortStrayLoad.Q_flow
+  0  2.9314999999999998E+02       0                 1.7976931348623157E+308
+  6   256   # drive_fmu.dcpm.thermalAmbient.thermalPort.heatPortFriction.T
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.thermalAmbient.thermalPort.heatPortFriction.Q_flow
+  0  2.9314999999999998E+02       0                 1.7976931348623157E+308
+  6   256   # drive_fmu.dcpm.thermalAmbient.thermalPort.heatPortBrush.T
+  0  2.9314999999999998E+02       0                 1.7976931348623157E+308
+  6   256   # drive_fmu.dcpm.thermalAmbient.thermalPort.heatPortPermanentMagnet.T
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.thermalAmbient.thermalPort.heatPortPermanentMagnet.Q_flow
+  0  2.9314999999999998E+02       0                 1.7976931348623157E+308
+  6   256   # drive_fmu.dcpm.thermalAmbient.temperatureCore.T
+  0  2.9314999999999998E+02       0                 1.7976931348623157E+308
+  6   256   # drive_fmu.dcpm.thermalAmbient.temperatureCore.port.T
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.thermalAmbient.temperatureCore.port.Q_flow
+  0  2.9314999999999998E+02       0                 1.7976931348623157E+308
+  6   256   # drive_fmu.dcpm.thermalAmbient.temperatureStrayLoad.T
+  0  2.9314999999999998E+02       0                 1.7976931348623157E+308
+  6   256   # drive_fmu.dcpm.thermalAmbient.temperatureStrayLoad.port.T
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.thermalAmbient.temperatureStrayLoad.port.Q_flow
+  0  2.9314999999999998E+02       0                 1.7976931348623157E+308
+  6   256   # drive_fmu.dcpm.thermalAmbient.temperatureFriction.T
+  0  2.9314999999999998E+02       0                 1.7976931348623157E+308
+  6   256   # drive_fmu.dcpm.thermalAmbient.temperatureFriction.port.T
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.thermalAmbient.temperatureFriction.port.Q_flow
+  0  2.9314999999999998E+02       0                 1.7976931348623157E+308
+  6   256   # drive_fmu.dcpm.thermalAmbient.temperatureBrush.T
+  0  2.9314999999999998E+02       0                 1.7976931348623157E+308
+  6   256   # drive_fmu.dcpm.thermalAmbient.temperatureBrush.port.T
+  0  2.9314999999999998E+02       0                       0                
+  6   256   # drive_fmu.dcpm.thermalAmbient.temperaturePermanentMagnet.T
+  0  2.9314999999999998E+02       0                 1.7976931348623157E+308
+  6   256   # drive_fmu.dcpm.thermalAmbient.temperaturePermanentMagnet.port.T
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.thermalAmbient.temperaturePermanentMagnet.port.Q_flow
+  0  2.9314999999999998E+02       0                       0                
+  6   256   # drive_fmu.dcpm.thermalAmbient.constTpm.k
+  0  2.9314999999999998E+02       0                       0                
+  6   256   # drive_fmu.dcpm.thermalAmbient.constTpm.y
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.internalThermalPort.heatPortArmature.Q_flow
+  0  2.9314999999999998E+02       0                 1.7976931348623157E+308
+  6   256   # drive_fmu.dcpm.internalThermalPort.heatPortCore.T
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.internalThermalPort.heatPortCore.Q_flow
+  0  2.9314999999999998E+02       0                 1.7976931348623157E+308
+  6   256   # drive_fmu.dcpm.internalThermalPort.heatPortStrayLoad.T
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.internalThermalPort.heatPortStrayLoad.Q_flow
+  0  2.9314999999999998E+02       0                 1.7976931348623157E+308
+  6   256   # drive_fmu.dcpm.internalThermalPort.heatPortFriction.T
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.internalThermalPort.heatPortFriction.Q_flow
+  0  2.9314999999999998E+02       0                 1.7976931348623157E+308
+  6   256   # drive_fmu.dcpm.internalThermalPort.heatPortBrush.T
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.internalThermalPort.heatPortBrush.Q_flow
+  0  2.9314999999999998E+02       0                 1.7976931348623157E+308
+  6   256   # drive_fmu.dcpm.internalThermalPort.heatPortPermanentMagnet.T
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.internalThermalPort.heatPortPermanentMagnet.Q_flow
+  0       0                       0                       0                
+  6   257   # drive_fmu.dcpm.airGapDC.quasiStatic
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpm.airGapDC.turnsRatio
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.airGapDC.vei
+  0       1                       0                       0                
+  6   256   # drive_fmu.dcpm.airGapDC.ie
+  0       1                       0                       0                
+  6   256   # drive_fmu.dcpm.airGapDC.psi_e
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.airGapDC._psi_e_der
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.airGapDC.vai
+  0       1                       0                       0                
+  6   256   # drive_fmu.dcpm.airGapDC.Le
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.airGapDC.support._phi_der
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.airGapDC.pin_ep.v
+  0       1                       0                       0                
+  6   256   # drive_fmu.dcpm.airGapDC.pin_ep.i
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.airGapDC.pin_en.v
+  0      -1                       0                       0                
+  6   256   # drive_fmu.dcpm.airGapDC.pin_en.i
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.eGround.p.v
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.eGround.p.i
+  0       1                       0                       0                
+  6   256   # drive_fmu.dcpm.ie.I
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.ie.v
+  0       1                       0                       0                
+  6   256   # drive_fmu.dcpm.ie.i
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.ie.p.v
+  0       1                       0                       0                
+  6   256   # drive_fmu.dcpm.ie.p.i
+  0       0                       0                       0                
+  6   256   # drive_fmu.dcpm.ie.n.v
+  0      -1                       0                       0                
+  6   256   # drive_fmu.dcpm.ie.n.i
+ -1  1.0000000000000000E-03       0                       0                
+  1   280   # drive_fmu.dcpmData.Jr
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpmData.Js
+ -1     100                       0                       0                
+  1   280   # drive_fmu.dcpmData.VaNominal
+ -1     100                       0                       0                
+  1   280   # drive_fmu.dcpmData.IaNominal
+ -1  1.4922565104552001E+02       0                       0                
+  1   280   # drive_fmu.dcpmData.wNominal
+ -1  2.9314999999999998E+02       0                 1.7976931348623157E+308
+  1   280   # drive_fmu.dcpmData.TaNominal
+ -1  5.0000000000000003E-02       0                       0                
+  1   280   # drive_fmu.dcpmData.Ra
+ -1  2.9314999999999998E+02       0                 1.7976931348623157E+308
+  1   280   # drive_fmu.dcpmData.TaRef
+ -1       0                       0                       0                
+  1   280   # drive_fmu.dcpmData.alpha20a
+ -1  1.5000000000000000E-03       0                       0                
+  1   280   # drive_fmu.dcpmData.La
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpmData.ViNominal
+  0       0                       0                 1.7976931348623157E+308
+  6   256   # drive_fmu.dcpmData.frictionParameters.PRef
+  0  9.9999999999999997E-61  9.9999999999999997E-61 1.7976931348623157E+308
+  6   328   # drive_fmu.dcpmData.frictionParameters.wRef
+ -1       2                  9.9999999999999997E-61 1.7976931348623157E+308
+  1   280   # drive_fmu.dcpmData.frictionParameters.power_w
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpmData.frictionParameters.tauRef
+  0  1.0000000000000000E-03       0                       0                
+  6   256   # drive_fmu.dcpmData.frictionParameters.linear
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpmData.frictionParameters.wLinear
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpmData.frictionParameters.tauLinear
+  0       1                       0                       0                
+  6   258   # drive_fmu.dcpmData.coreParameters.m
+  0       0                       0                 1.7976931348623157E+308
+  6   256   # drive_fmu.dcpmData.coreParameters.PRef
+  0  9.9999999999999997E-61  9.9999999999999997E-61 1.7976931348623157E+308
+  6   328   # drive_fmu.dcpmData.coreParameters.VRef
+  0  9.9999999999999997E-61  9.9999999999999997E-61 1.7976931348623157E+308
+  6   328   # drive_fmu.dcpmData.coreParameters.wRef
+  0       0                       0                       1                
+  6   256   # drive_fmu.dcpmData.coreParameters.ratioHysteresis
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpmData.coreParameters.GcRef
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpmData.coreParameters.wMin
+  0       0                       0                 1.7976931348623157E+308
+  6   256   # drive_fmu.dcpmData.strayLoadParameters.PRef
+  0  9.9999999999999997E-61  9.9999999999999997E-61 1.7976931348623157E+308
+  6   328   # drive_fmu.dcpmData.strayLoadParameters.IRef
+  0  9.9999999999999997E-61  9.9999999999999997E-61 1.7976931348623157E+308
+  6   328   # drive_fmu.dcpmData.strayLoadParameters.wRef
+ -1       1                  9.9999999999999997E-61 1.7976931348623157E+308
+  1   280   # drive_fmu.dcpmData.strayLoadParameters.power_w
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpmData.strayLoadParameters.tauRef
+  0  6.9999999999999996E-01       0                       0                
+  6   256   # drive_fmu.dcpmData.brushParameters.V
+  0       0                       0                       0                
+  6   328   # drive_fmu.dcpmData.brushParameters.ILinear
+ -1       0                       0                       0                
+  1   280   # drive_fmu._V_start
+ -1       0                       0                       0                
+  1   280   # drive_fmu._LoadTorque_Nm_start
+ -1       0                       0                       0                
+  1   281   # drive_fmu.fmi_loggingOn
+  0       4                       0                       0                
+  6  1282   # drive_fmu.fmi_NumberOfEventIndicators
+  0       0                       0                       0                
+  6  1280   # drive_fmu.fmi_z[1]
+  0       0                       0                       0                
+  6  1280   # drive_fmu.fmi_z[2]
+  0       0                       0                       0                
+  6  1280   # drive_fmu.fmi_z[3]
+  0       0                       0                       0                
+  6  1280   # drive_fmu.fmi_z[4]
+  0       0                       0                       0                
+  6  1353   # drive_fmu.fmi_z_positive[1]
+  0       0                       0                       0                
+  6  1353   # drive_fmu.fmi_z_positive[2]
+  0       0                       0                       0                
+  6  1353   # drive_fmu.fmi_z_positive[3]
+  0       0                       0                       0                
+  6  1353   # drive_fmu.fmi_z_positive[4]
+  0       0                       0                       0                
+  6  1346   # drive_fmu.fmi.id
+ -1       0                       0                       0                
+  1  1304   # drive_fmu.zeroOffset
+  0       0                       0                       0                
+  6  1353   # drive_fmu.fmi_NewStates
+  0       0                       0                       0                
+  6  1345   # drive_fmu.fmi_DiscreteInputChanged
+  0       0                       0                       0                
+  6  1353   # drive_fmu.fmi_iterationConverged
+  0       0                       0                       0                
+  6  1354   # drive_fmu.fmi_NextMode
+  0       0                       0                       0                
+  6  1353   # drive_fmu.fmi_flip
+  0  9.9999999999999995E+36       0                       0                
+  6  1352   # drive_fmu.fmi_TNext
+  0       0                       0                       0                
+  6  1280   # drive_fmu.myTime
+  0       0                       0                       0                
+  6  1280   # drive_fmu.myTimeStart
+  0       1                       0                       0                
+  6  1345   # drive_fmu._first
+  0       1                       0                       0                
+  6  1281   # drive_fmu._startValuesNotSet
+  0       0                       0                       0                
+  6  1352   # drive_fmu.fmi_dummy
+
+
+# Matrix with 6 columns defining the initial value calculation
+# (columns 5 and 6 are not utilized for the calculation but are
+#  reported by dymosim via dymosim -i for user convenience):
+#
+# column 1: Type of initial value
+#           = -2: special case: for continuing simulation (column 2 = value)
+#           = -1: fixed value (column 2 = fixed value)
+#           =  0: free value, i.e., no restriction (column 2 = initial value)
+#           >  0: desired value (column 1 = weight for optimization
+#                                column 2 = desired value)
+#                 use weight=1, since automatic scaling usually
+#                 leads to equally weighted terms
+# column 2: fixed, free or desired value according to column 1.
+# column 3: Minimum value (ignored, if Minimum >= Maximum).
+# column 4: Maximum value (ignored, if Minimum >= Maximum).
+#           Minimum and maximum restrict the search range in initial
+#           value calculation. They might also be used for scaling.
+# column 5: Category of variable.
+#           = 1: parameter.
+#           = 2: state.
+#           = 3: state derivative.
+#           = 4: output.
+#           = 5: input.
+#           = 6: auxiliary variable.
+# column 6: Data type of variable and flags according to dsBaseType
+#  <value>&3= 0: real.
+#  <value>&3= 1: boolean.
+#  <value>&3= 2: integer.
+#
+# Initial values are calculated according to the following procedure:
+#
+# Initial values are calculated according to the following procedure:
+#
+# - If parameters, states and inputs are FIXED, and other variables
+#   are FREE, the initialization is performed in the normal way.
+#
+# - If parameters and inputs are FIXED, and all other variables
+#   have special case for continue (-2 in 1st column), or FREE
+#   the initialization is ignored and variables are set to these values.
+#   This is intended to continue the simulation.
+#
+#   Which variables will be important for initialization and continue
+#   is indicated by value in column 6 & dsStartMasks.
+#
+char initialDescription(334,114)
+Height of step
+Offset of output signal y
+Output y = offset for time < startTime [s]
+Height of step
+Offset of output signal y
+Output y = offset for time < startTime [s]
+
+[N.m]
+[:#(type=Boolean)]
+[:#(type=Integer)]
+[:#(type=Integer)]
+
+[:#(type=Boolean)]
+[:#(type=Boolean)]
+[:#(type=Boolean)]
+[:#(type=Integer)]
+[:#(type=Boolean)]
+
+
+[s]
+[:#(type=Boolean)]
+[:#(type=Boolean)]
+
+
+
+Desired motor speed
+[rad/s]
+[rad/s]
+Motor speed [rad/s]
+Armature voltage [V]
+[:#(type=Boolean)]
+Time point of input used when calling doStep. [:#(type=Boolean)]
+[:#(type=Boolean)]
+
+
+
+
+Number of doSteps called between two CommunicationStepSize [:#(type=Integer)]
+[:#(type=Boolean)]
+Set the tolerance fmi_rTol in fmi2SetupExperiment, if false fmu defautl tolerence will be used. [:#(type=Boolean)]
+Relative tolerance for the internal solver of the fmu
+[:#(type=Integer)]
+[:#(type=Boolean)]
+[:#(type=Boolean)]
+
+[:#(type=Integer)]
+[:#(type=Boolean)]
+
+[s]
+[V]
+Voltage between pin p and n (= p.v - n.v) as input signal [V]
+Current flowing from pin p to pin n [A]
+Potential at the pin [V]
+Current flowing into the pin [A]
+Potential at the pin [V]
+Current flowing into the pin [A]
+Moment of inertia [kg.m2]
+[rad|deg]
+Absolute rotation angle of component [rad|deg]
+der(Absolute rotation angle of component) [rad/s]
+[rad/s]
+Absolute angular velocity of component (= der(phi)) [rad/s]
+der(Absolute angular velocity of component (= der(phi))) [rad/s2]
+Absolute angular acceleration of component (= der(w)) [rad/s2]
+Cut torque in the flange [N.m]
+Cut torque in the flange [N.m]
+Absolute angle of support flange [rad|deg]
+Transmission ratio (flange_a.phi/flange_b.phi)
+Angle between left shaft flange and support [rad|deg]
+Cut torque in the flange [N.m]
+Cut torque in the flange [N.m]
+Cut torque in the flange [N.m]
+Absolute angle of support flange [rad|deg]
+Cut torque in the flange [N.m]
+Operational armature temperature [K|degC]
+Nominal armature voltage [V]
+Nominal armature current (>0..Motor, <0..Generator) [A]
+Nominal speed [rad/s|rev/min]
+Nominal armature temperature [K|degC]
+Armature resistance at TaRef [Ohm]
+Reference temperature of armature resistance [K|degC]
+Temperature coefficient of armature resistance [1/K]
+Armature inductance [H]
+Rotor's moment of inertia [kg.m2]
+Enable / disable (=fixed stator) support [:#(type=Boolean)]
+Stator's moment of inertia [kg.m2]
+Enable / disable (=fixed temperatures) thermal port [:#(type=Boolean)]
+Mechanical angle of rotor against stator [rad|deg]
+Electromagnetic torque [N.m]
+[A]
+
+No electrical transients if true [:#(type=Boolean)]
+Nominal induced Voltage [V]
+Nominal magnetic flux [Wb]
+Ratio of armature turns over number of turns of the excitation winding [rad-1]
+Operational temperature of permanent magnet [K|degC]
+Field excitation inductance [H]
+Equivalent excitation current [A]
+Reference friction losses at wRef [W]
+Reference angular velocity that the PRef refer to [rad/s|rev/min]
+Exponent of friction torque w.r.t. angular velocity
+Reference friction torque at reference angular velocity [N.m]
+Linear angular velocity range with respect to reference angular velocity
+Linear angular velocity range [rad/s]
+Torque corresponding with linear angular velocity range [N.m]
+Cut torque in the flange [N.m]
+Moment of inertia [kg.m2]
+der(Absolute angular velocity of component (= der(phi))) [rad/s2]
+Moment of inertia [kg.m2]
+Absolute rotation angle of component [rad|deg]
+der(Absolute rotation angle of component) [rad/s]
+Absolute angular velocity of component (= der(phi)) [rad/s]
+der(Absolute angular velocity of component (= der(phi))) [rad/s2]
+Absolute angular acceleration of component (= der(w)) [rad/s2]
+Cut torque in the flange [N.m]
+Cut torque in the flange [N.m]
+Fixed offset angle of housing [rad|deg]
+Cut torque in the flange [N.m]
+Angle between shaft and support [rad|deg]
+Torque [N.m]
+Loss power leaving component via heatPort (> 0, if heat is flowing out of component) [W]
+Cut torque in the flange [N.m]
+Cut torque in the flange [N.m]
+Reference friction losses at wRef [W]
+Reference angular velocity that the PRef refer to [rad/s|rev/min]
+Exponent of friction torque w.r.t. angular velocity
+Reference friction torque at reference angular velocity [N.m]
+Linear angular velocity range with respect to reference angular velocity
+Linear angular velocity range [rad/s]
+Torque corresponding with linear angular velocity range [N.m]
+Port temperature [K|degC]
+Heat flow rate (positive if flowing from outside into the component) [W]
+Cut torque in the flange [N.m]
+Number of phases (1 for DC, 3 for induction machines) [:#(type=Integer)]
+Reference core losses at reference inner voltage VRef [W]
+Reference inner RMS voltage that reference core losses PRef refer to [V]
+Reference angular velocity that reference core losses PRef refer to [rad/s]
+Ratio of hysteresis losses with respect to the total core losses at VRef and fRef
+Reference conductance at reference frequency and voltage [S]
+Angular velocity limit [rad/s]
+Reference stray load losses at IRef and wRef [W]
+Reference RMS current that PRef refers to [A]
+Reference angular velocity that PRef refers to [rad/s|rev/min]
+Exponent of stray load loss torque w.r.t. angular velocity
+Reference stray load torque at reference angular velocity and reference current [N.m]
+Total voltage drop of brushes for currents > ILinear [V]
+Current indicating linear voltage region of brush voltage drop [A]
+Electrical armature power [W]
+Mechanical power [W]
+Stator inertia power [W]
+Rotor inertia power [W]
+Total loss power [W]
+Armature copper losses [W]
+Core losses [W]
+Stray load losses [W]
+Friction losses [W]
+Brush losses [W]
+Permanent magnet losses [W]
+Potential at the pin [V]
+Resistance at temperature T_ref [Ohm]
+Reference temperature [K|degC]
+Temperature coefficient of resistance (R_actual = R*(1 + alpha*(T_heatPort - T_ref)) [1/K]
+Voltage drop of the two pins (= p.v - n.v) [V]
+Fixed device temperature if useHeatPort = false [K|degC]
+Temperature of heatPort [K|degC]
+Actual resistance = R*(1 + alpha*(T_heatPort - T_ref)) [Ohm]
+Potential at the pin [V]
+Heat flow rate (positive if flowing from outside into the component) [W]
+Voltage drop of the two pins (= p.v - n.v) [V]
+Current flowing from pin p to pin n [A]
+der(Current flowing from pin p to pin n) [A/s]
+Inductance [H]
+No electrical transients if true [:#(type=Boolean)]
+Potential at the pin [V]
+Current flowing into the pin [A]
+Voltage drop of the two pins (= p.v - n.v) [V]
+Potential at the pin [V]
+Total voltage drop of brushes for currents > ILinear [V]
+Current indicating linear voltage region of brush voltage drop [A]
+Port temperature [K|degC]
+Heat flow rate (positive if flowing from outside into the component) [W]
+Voltage drop of the two pins (= p.v - n.v) [V]
+Current flowing from pin p to pin n [A]
+Loss power leaving component via heatPort (> 0, if heat is flowing out of component) [W]
+Variable core loss conductance [S]
+Limited angular velocity [rad/s]
+Current flowing into the pin [A]
+Current flowing into the pin [A]
+Number of phases (1 for DC, 3 for induction machines) [:#(type=Integer)]
+Reference core losses at reference inner voltage VRef [W]
+Reference inner RMS voltage that reference core losses PRef refer to [V]
+Reference angular velocity that reference core losses PRef refer to [rad/s]
+Ratio of hysteresis losses with respect to the total core losses at VRef and fRef
+Reference conductance at reference frequency and voltage [S]
+Angular velocity limit [rad/s]
+Port temperature [K|degC]
+Heat flow rate (positive if flowing from outside into the component) [W]
+Voltage drop of the two pins (= p.v - n.v) [V]
+Angle between shaft and support [rad|deg]
+Torque [N.m]
+Loss power leaving component via heatPort (> 0, if heat is flowing out of component) [W]
+Cut torque in the flange [N.m]
+Cut torque in the flange [N.m]
+Reference stray load losses at IRef and wRef [W]
+Reference RMS current that PRef refers to [A]
+Reference angular velocity that PRef refers to [rad/s|rev/min]
+Exponent of stray load loss torque w.r.t. angular velocity
+Reference stray load torque at reference angular velocity and reference current [N.m]
+Port temperature [K|degC]
+Heat flow rate (positive if flowing from outside into the component) [W]
+If true, temperature inputs are used; else, temperatures are constant [:#(type=Boolean)]
+Default temperature [K|degC]
+Temperature of armature [K|degC]
+Heat flow rate of core losses [W]
+Heat flow rate of stray load losses [W]
+Heat flow rate of friction losses [W]
+Temperature of permanent magnet [K|degC]
+Heat flow rate of permanent magnets [W]
+[W]
+Port temperature [K|degC]
+Heat flow rate (positive if flowing from outside into the component) [W]
+Port temperature [K|degC]
+Heat flow rate (positive if flowing from outside into the component) [W]
+Port temperature [K|degC]
+Heat flow rate (positive if flowing from outside into the component) [W]
+Port temperature [K|degC]
+Port temperature [K|degC]
+Heat flow rate (positive if flowing from outside into the component) [W]
+Fixed temperature at port [K|degC]
+Port temperature [K|degC]
+Heat flow rate (positive if flowing from outside into the component) [W]
+Fixed temperature at port [K|degC]
+Port temperature [K|degC]
+Heat flow rate (positive if flowing from outside into the component) [W]
+Fixed temperature at port [K|degC]
+Port temperature [K|degC]
+Heat flow rate (positive if flowing from outside into the component) [W]
+Fixed temperature at port [K|degC]
+Port temperature [K|degC]
+[K]
+Port temperature [K|degC]
+Heat flow rate (positive if flowing from outside into the component) [W]
+Constant output value [K]
+Connector of Real output signal [K]
+Heat flow rate (positive if flowing from outside into the component) [W]
+Port temperature [K|degC]
+Heat flow rate (positive if flowing from outside into the component) [W]
+Port temperature [K|degC]
+Heat flow rate (positive if flowing from outside into the component) [W]
+Port temperature [K|degC]
+Heat flow rate (positive if flowing from outside into the component) [W]
+Port temperature [K|degC]
+Heat flow rate (positive if flowing from outside into the component) [W]
+Port temperature [K|degC]
+Heat flow rate (positive if flowing from outside into the component) [W]
+No electrical transients if true [:#(type=Boolean)]
+Ratio of armature turns over number of turns of the excitation winding [rad-1]
+Voltage drop across field excitation inductance [V]
+Excitation current [A]
+Excitation flux [Wb]
+der(Excitation flux) [V]
+Induced armature voltage [V]
+Excitation inductance [H]
+der(Absolute rotation angle of flange) [rad/s]
+Potential at the pin [V]
+Current flowing into the pin [A]
+Potential at the pin [V]
+Current flowing into the pin [A]
+Potential at the pin [V]
+Current flowing into the pin [A]
+Value of constant current [A]
+Voltage drop of the two pins (= p.v - n.v) [V]
+Current flowing from pin p to pin n [A]
+Potential at the pin [V]
+Current flowing into the pin [A]
+Potential at the pin [V]
+Current flowing into the pin [A]
+Rotor's moment of inertia [kg.m2]
+Stator's moment of inertia [kg.m2]
+Nominal armature voltage [V]
+Nominal armature current (>0..Motor, <0..Generator) [A]
+Nominal speed [rad/s|rev/min]
+Nominal armature temperature [K|degC]
+Armature resistance at TaRef [Ohm]
+Reference temperature of armature resistance [K|degC]
+Temperature coefficient of armature resistance [1/K]
+Armature inductance [H]
+Induced voltage at nominal operating point [V]
+Reference friction losses at wRef [W]
+Reference angular velocity that the PRef refer to [rad/s|rev/min]
+Exponent of friction torque w.r.t. angular velocity
+Reference friction torque at reference angular velocity [N.m]
+Linear angular velocity range with respect to reference angular velocity
+Linear angular velocity range [rad/s]
+Torque corresponding with linear angular velocity range [N.m]
+Number of phases (1 for DC, 3 for induction machines) [:#(type=Integer)]
+Reference core losses at reference inner voltage VRef [W]
+Reference inner RMS voltage that reference core losses PRef refer to [V]
+Reference angular velocity that reference core losses PRef refer to [rad/s]
+Ratio of hysteresis losses with respect to the total core losses at VRef and fRef
+Reference conductance at reference frequency and voltage [S]
+Angular velocity limit [rad/s]
+Reference stray load losses at IRef and wRef [W]
+Reference RMS current that PRef refers to [A]
+Reference angular velocity that PRef refers to [rad/s|rev/min]
+Exponent of stray load loss torque w.r.t. angular velocity
+Reference stray load torque at reference angular velocity and reference current [N.m]
+Total voltage drop of brushes for currents > ILinear [V]
+Current indicating linear voltage region of brush voltage drop [A]
+[V]
+[N.m]
+[:#(type=Boolean)]
+[:#(type=Integer)]
+Event indicators
+Event indicators
+Event indicators
+Event indicators
+[:#(type=Boolean)]
+[:#(type=Boolean)]
+[:#(type=Boolean)]
+[:#(type=Boolean)]
+[:#(type=Integer)]
+
+[:#(type=Boolean)]
+[:#(type=Boolean)]
+[:#(type=Boolean)]
+[:#(type=Integer)]
+[:#(type=Boolean)]
+
+[s]
+[s]
+[:#(type=Boolean)]
+[:#(type=Boolean)]
+
+

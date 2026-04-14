@@ -1,0 +1,19 @@
+ 
+Compiling and linking the model (Visual C++). 
+ 
+64-bit mode activated. 
+dsmodel.c
+dsmodel.c(688): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+dsmodel.c(1204): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+dsmodel.c(1655): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+dsmodel.c(3170): warning C4133: 'function': incompatible types - from 'Integer *' to 'double *'
+dsmodel.c(4135): warning C4133: 'function': incompatible types - from 'Integer *' to 'double *'
+dsmodel.c(5050): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+dsmodel.c(5431): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+   Creating library dymosim.lib and object dymosim.exp
+LINK : warning LNK4199: /DELAYLOAD:Controller.dll ignored; no imports found from Controller.dll
+LINK : warning LNK4199: /DELAYLOAD:Drive.dll ignored; no imports found from Drive.dll
+LINK : warning LNK4199: /DELAYLOAD:Stimuli.dll ignored; no imports found from Stimuli.dll
+ 
+Successful generation of Dymosim. 
+ 

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fmiModelDescription
+  fmiVersion="2.0"
+  guid="{3224d720-7b21-417a-b138-5d5099f4b70d}"
+  modelName="Controller"
+  generationTool="Simulink 9.9 (R2023a) 19-Nov-2022 with FMI Kit 3.1 (grtfmi.tlc, ode3, 0.001 s)"
+  generationDateAndTime="2023-10-09T07:21:44"
+  version="16.10">
+
+  <CoSimulation
+    modelIdentifier="Controller"
+    canBeInstantiatedOnlyOncePerProcess="true"
+    canHandleVariableCommunicationStepSize="true">
+    <SourceFiles>
+      <File name="fmi2Functions.c"/>
+      <File name="Controller.c"/>
+      <File name="Controller_data.c"/>
+    </SourceFiles>
+  </CoSimulation>
+
+  <UnitDefinitions>
+    <Unit name="V"/>
+    <Unit name="rad/s"/>
+  </UnitDefinitions>
+
+  <DefaultExperiment
+    startTime="0.0"
+    stopTime="10.0"
+    stepSize="0.001"/>
+
+  <ModelVariables>
+
+    <!-- Parameters -->
+
+    <!-- Inputs -->
+    <ScalarVariable name="w_desired" valueReference="1" causality="input" description="Desired motor speed">
+      <Real start="0" unit="rad/s"/>
+    </ScalarVariable>
+    <ScalarVariable name="w" valueReference="2" causality="input" description="Motor speed">
+      <Real start="0" unit="rad/s"/>
+    </ScalarVariable>
+
+    <!-- Outputs -->
+    <ScalarVariable name="v" valueReference="3" causality="output" description="Armature voltage">
+      <Real unit="V"/>
+    </ScalarVariable>
+
+  </ModelVariables>
+
+  <ModelStructure>
+    <Outputs>
+      <Unknown index="3"/>
+    </Outputs>
+    <InitialUnknowns>
+      <Unknown index="3"/>
+    </InitialUnknowns>
+  </ModelStructure>
+
+</fmiModelDescription>
