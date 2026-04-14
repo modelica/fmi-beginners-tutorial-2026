@@ -2,23 +2,15 @@
 
 ![FMI-tutorial-logo](FMI-tutorial-logo.png)
 
-![](https://modelica.org/events/modelica2025/images/Modelica_and_FMI_Confernce_Logo.svg)
+![](https://modelica.org/events/asian2026/images/asian-2026-logo-light.svg)
 
-This repository contains the agenda and materials for the FMI Beginner's tutorial presented at the [16th International Modelica & FMI Conference](https://modelica.org/events/modelica2025/). 
+This repository contains the agenda and materials for the FMI Beginner's tutorial presented at the [Asian Modelica & FMI Conference 2026](https://modelica.org/events/asian2026/). 
 
-A Video Recording is available on [YouTube](https://www.youtube.com/watch?v=iOHmxC1iLRM)
+A Video Recording from a similar tutorial at the Modelica and FMI Conference 2025 is available on [YouTube](https://www.youtube.com/watch?v=iOHmxC1iLRM)
 
 ## Agenda
 
-| Time  | Topic                                        |
-| ----- | -------------------------------------------- |
-| 13:30 | Introduction to the FMI (Christian Bertsch)  |
-| 14:15 | Working with FMUs (Claudio Gomes)            |
-| 14:45 | Break                                        |
-| 15:15 | Connecting Multiple FMUs (Maurizio Palmieri) |
-| 16:00 | Outlook to FMI 3.0 (Christian Bertsch)       |
-| 16:20 | Q&A                                          |
-| 16:30 | End Tutorial                                 |
+(Work in Progress)
 
 ## Part 1: Introduction to the FMI (45 min)
 
@@ -42,7 +34,6 @@ by [Christian Bertsch](https://github.com/chrbertsch)
 
 ## Part 2: Working with FMUs (30 min)
 
-by [Claudio Gomes](https://clagms.github.io/)
 
 ### Prerequisites
 
@@ -72,8 +63,6 @@ Live demo + Jupyter notebook
   4. inspect results
 
 ## Part 3: Connecting Multiple FMUs (40 min)
-
-by [Maurizio Palmieri](https://github.com/mapalmieri)
 
 ### Prerequisites
 
@@ -133,5 +122,6 @@ Docs released under [Attribution-ShareAlike 4.0 International](https://creativec
 
 # Acknowledgments
 
+This tutorial is based on previous versions of the tutorial given by Claudio Gomes, Maurizio Palmieri and Christian Bertsch.
 We are thankful to [Torsten Sommer](https://github.com/t-sommer) for his contributions to this tutorial materials, and to [Kenneth Lausdahl](https://www.linkedin.com/in/kennethlausdahl/) as well as the other developers of the INTO-CPS tool and Maestro.
 In addition, part of this work has been supported by the DIGIT-Bench project (case no. 640222-497272), funded by the Energy Technology Development and Demonstration Programme (EUDP).
