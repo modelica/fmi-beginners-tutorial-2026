@@ -5,9 +5,11 @@ package MODELICA_Demo
       Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 0, origin = {-30, -50})));
     Modelica.Blocks.Sources.Step stepW(startTime = 0.1, height = 10) annotation (
       Placement(transformation(extent = {{-40, 40}, {-20, 60}}, rotation = 0)));
-    Modelica.Blocks.Interfaces.RealOutput w_desired annotation (
+    Modelica.Blocks.Interfaces.RealOutput w_desired(unit="rad/s")
+                                                    annotation (
       Placement(transformation(extent = {{100, 40}, {120, 60}}), iconTransformation(extent = {{100, 40}, {120, 60}})));
-    Modelica.Blocks.Interfaces.RealOutput LoadTorque_Nm annotation (
+    Modelica.Blocks.Interfaces.RealOutput LoadTorque_Nm(unit="N.m")
+                                                        annotation (
       Placement(transformation(extent = {{100, -60}, {120, -40}}), iconTransformation(extent = {{100, -60}, {120, -40}})));
   equation
     connect(stepW.y, w_desired) annotation (
@@ -21,11 +23,14 @@ package MODELICA_Demo
   end Stimuli;
 
   model Control
-    Modelica.Blocks.Interfaces.RealInput w_desired annotation (
+    Modelica.Blocks.Interfaces.RealInput w_desired(unit="rad/s")
+                                                   annotation (
       Placement(visible = true,transformation(extent = {{-140, -20}, {-100, 20}}, rotation = 0), iconTransformation(extent = {{-140, 20}, {-100, 60}}, rotation = 0)));
-    Modelica.Blocks.Interfaces.RealOutput V annotation (
+    Modelica.Blocks.Interfaces.RealOutput V(unit="V")
+                                            annotation (
       Placement(transformation(extent = {{90, -10}, {110, 10}}), iconTransformation(extent = {{100, -10}, {120, 10}})));
-    Modelica.Blocks.Interfaces.RealInput w annotation (
+    Modelica.Blocks.Interfaces.RealInput w(unit="rad/s")
+                                           annotation (
       Placement(visible = true,transformation(extent = {{-140, -100}, {-100, -60}}, rotation = 0), iconTransformation( origin = {-120, -40},extent = {{-20, -20}, {20, 20}}, rotation = 0)));
     Modelica.Blocks.Math.Feedback speederror annotation (
       Placement(transformation(extent = {{-30, -10}, {-10, 10}}, rotation = 0)));
@@ -47,7 +52,8 @@ package MODELICA_Demo
   end Control;
 
   model Drive
-    Modelica.Blocks.Interfaces.RealInput V annotation (
+    Modelica.Blocks.Interfaces.RealInput V(unit="V")
+                                           annotation (
       Placement(transformation(extent = {{-120, -10}, {-100, 10}}), iconTransformation(extent={{-140,20},
               {-100,60}})));
     Modelica.Electrical.Analog.Sources.SignalVoltage signalVoltage annotation (
@@ -60,11 +66,13 @@ package MODELICA_Demo
       Placement(transformation(extent = {{0, -10}, {20, 10}})));
     Modelica.Mechanics.Rotational.Sensors.SpeedSensor speedSensor annotation (
       Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin = {0, -30})));
-    Modelica.Blocks.Interfaces.RealOutput w annotation (
+    Modelica.Blocks.Interfaces.RealOutput w(unit="rad/s")
+                                            annotation (
       Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin = {0, -100}), iconTransformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin={0,-70})));
     Modelica.Mechanics.Rotational.Sources.Torque torque annotation (
       Placement(transformation(extent = {{10, -10}, {-10, 10}}, rotation = 0, origin = {70, 0})));
-    Modelica.Blocks.Interfaces.RealInput LoadTorque_Nm annotation (
+    Modelica.Blocks.Interfaces.RealInput LoadTorque_Nm(unit="N.m")
+                                                       annotation (
       Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin = {110, 0}), iconTransformation(extent={{20,-20},
               {-20,20}},                                                                                                                                rotation = 180, origin={-120,-40})));
     Modelica.Electrical.Machines.BasicMachines.DCMachines.DC_PermanentMagnet dcpm(VaNominal = dcpmData.VaNominal, IaNominal = dcpmData.IaNominal, wNominal = dcpmData.wNominal, TaNominal = dcpmData.TaNominal, Ra = dcpmData.Ra, TaRef = dcpmData.TaRef, La = dcpmData.La, Jr = dcpmData.Jr, useSupport = false, Js = dcpmData.Js, frictionParameters = dcpmData.frictionParameters, coreParameters = dcpmData.coreParameters, strayLoadParameters = dcpmData.strayLoadParameters, brushParameters = dcpmData.brushParameters, TaOperational = 293.15, alpha20a = dcpmData.alpha20a, phiMechanical(fixed = false), wMechanical(fixed = false), ia(fixed = true)) annotation (
@@ -280,5 +288,5 @@ package MODELICA_Demo
   end ControlledElectricDrive_ctrl_fmu_omc;
 
   annotation (
-    uses(Modelica(version="4.0.0"), ModelicaServices(version="4.0.0")));
+    uses(Modelica(version="4.1.0"), ModelicaServices(version="4.1.0")));
 end MODELICA_Demo;
