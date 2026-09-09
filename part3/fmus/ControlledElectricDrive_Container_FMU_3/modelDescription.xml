@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<fmiModelDescription fmiVersion="3.0" modelName="ControlledElectricDrive_Container_FMU_3" instantiationToken="c103b28c-b1e7-4420-b890-949e0a7a8420" variableNamingConvention="flat">
+  <CoSimulation modelIdentifier="container_fmu" canHandleVariableCommunicationStepSize="true"/>
+  <ModelVariables>
+    <Float64 name="w" valueReference="0" causality="output" variability="continuous" initial="calculated" unit="rad/s"/>
+  </ModelVariables>
+  <ModelStructure>
+    <Output valueReference="0"/>
+  </ModelStructure>
+</fmiModelDescription>

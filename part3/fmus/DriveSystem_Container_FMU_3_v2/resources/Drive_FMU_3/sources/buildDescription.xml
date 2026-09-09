@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fmiBuildDescription
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  fmiVersion="3.0.1">
+  <BuildConfiguration
+    modelIdentifier="Drive_FMU_3">
+    <SourceFileSet>
+      <SourceFile
+        name="all_Drive_FMU_3.c"/>
+    </SourceFileSet>
+  </BuildConfiguration>
+</fmiBuildDescription>

@@ -1,0 +1,90 @@
+{
+    "containerVersion": "0.1.0",
+    "instantiationToken": "b5909613-9ba5-46b9-be3a-3dcdc5e89c46",
+    "fixedStepSize": 0.001,
+    "parallelDoStep": false,
+    "components": [
+        {
+            "fmiMajorVersion": "3",
+            "name": "Controller",
+            "instantiationToken": "{8c9720ef-e9b7-48bf-b916-bf92d69f039f}",
+            "modelIdentifier": "Controller_FMU_3",
+            "path": "Controller_FMU_3"
+        },
+        {
+            "fmiMajorVersion": "3",
+            "name": "Drive",
+            "instantiationToken": "{ed214032-92d6-4b07-b37e-35befe7c0f4b}",
+            "modelIdentifier": "Drive_FMU_3",
+            "path": "Drive_FMU_3"
+        },
+        {
+            "fmiMajorVersion": "3",
+            "name": "Stimuli",
+            "instantiationToken": "{27a8cb55-905d-405c-9370-64909a09e8c0}",
+            "modelIdentifier": "Stimuli_FMU_3",
+            "path": "Stimuli_FMU_3"
+        }
+    ],
+    "variables": [
+        {
+            "variableType": "Float64",
+            "mappings": [
+                [
+                    1,
+                    603979776
+                ]
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "variableType": "Float64",
+            "srcComponent": 2,
+            "dstComponent": 0,
+            "srcValueReferences": [
+                603979776
+            ],
+            "dstValueReferences": [
+                620756992
+            ],
+            "size": 1
+        },
+        {
+            "variableType": "Float64",
+            "srcComponent": 2,
+            "dstComponent": 1,
+            "srcValueReferences": [
+                603979777
+            ],
+            "dstValueReferences": [
+                620756993
+            ],
+            "size": 1
+        },
+        {
+            "variableType": "Float64",
+            "srcComponent": 0,
+            "dstComponent": 1,
+            "srcValueReferences": [
+                603979776
+            ],
+            "dstValueReferences": [
+                620756992
+            ],
+            "size": 1
+        },
+        {
+            "variableType": "Float64",
+            "srcComponent": 1,
+            "dstComponent": 0,
+            "srcValueReferences": [
+                603979776
+            ],
+            "dstValueReferences": [
+                620756993
+            ],
+            "size": 1
+        }
+    ]
+}

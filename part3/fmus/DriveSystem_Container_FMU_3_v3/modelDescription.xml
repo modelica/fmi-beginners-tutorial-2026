@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<fmiModelDescription fmiVersion="3.0" modelName="DriveSystem_Container_FMU_3" instantiationToken="b5909613-9ba5-46b9-be3a-3dcdc5e89c46" variableNamingConvention="flat">
+  <CoSimulation modelIdentifier="container_fmu" canHandleVariableCommunicationStepSize="true" fixedInternalStepSize="0.001"/>
+  <ModelVariables>
+    <Float64 name="time" valueReference="0" causality="independent" variability="continuous"/>
+    <Float64 name="w" valueReference="1" causality="output" variability="continuous" initial="calculated"/>
+  </ModelVariables>
+  <ModelStructure>
+    <Output valueReference="1"/>
+  </ModelStructure>
+</fmiModelDescription>
