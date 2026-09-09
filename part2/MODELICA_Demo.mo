@@ -133,7 +133,8 @@ package MODELICA_Demo
       Placement(transformation(extent = {{-60, -10}, {-40, 10}})));
     Modelica.Mechanics.Rotational.Components.Inertia loadInertia1(J = 1, phi(start = 0, fixed = true), w(start = 0, fixed = true)) annotation (
       Placement(transformation(extent = {{30, -10}, {50, 10}}, rotation = 0)));
-    Modelica.Blocks.Interfaces.RealOutput w annotation (
+    Modelica.Blocks.Interfaces.RealOutput w(unit="rad/s")
+                                            annotation (
       Placement(transformation(extent = {{90, -70}, {110, -50}})));
     Modelica.Electrical.Machines.BasicMachines.DCMachines.DC_PermanentMagnet dcpm(VaNominal = dcpmData.VaNominal, IaNominal = dcpmData.IaNominal, wNominal = dcpmData.wNominal, TaNominal = dcpmData.TaNominal, Ra = dcpmData.Ra, TaRef = dcpmData.TaRef, La = dcpmData.La, Jr = dcpmData.Jr, useSupport = false, Js = dcpmData.Js, frictionParameters = dcpmData.frictionParameters, coreParameters = dcpmData.coreParameters, strayLoadParameters = dcpmData.strayLoadParameters, brushParameters = dcpmData.brushParameters, TaOperational = 293.15, alpha20a = dcpmData.alpha20a, phiMechanical(fixed = false), wMechanical(fixed = false), ia(fixed = true)) annotation (
       Placement(transformation(extent = {{-20, -10}, {0, 10}})));
